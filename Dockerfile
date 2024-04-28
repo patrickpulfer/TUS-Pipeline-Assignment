@@ -16,8 +16,8 @@ WORKDIR /usr/local/runme
 # Copy only the built JAR from the build stage to the runtime stage
 COPY --from=build /home/app/target/*.jar ./app.jar
 
-# Expose port 8080 for the application
-EXPOSE 8080
+# Expose port 8090 for the application
+EXPOSE 8090
 
 # Define the command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
