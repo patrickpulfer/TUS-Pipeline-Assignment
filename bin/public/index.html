@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MASE CarNetwork</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrapV4.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" href="css/font-awesome.css" />
+    <script>
+        showModal = function () { document.getElementById('detailsModal').style.display = 'block'; }
+        hideModal = function () { document.getElementById('detailsModal').style.display = 'none'; }
+    </script>
+    <style>
+        span {
+            float: right;
+            text-align: right;
+        }
+
+        .scroll_cars {
+            width: 85%;
+            height: 68px;
+            padding: 5px;
+            margin: 10px;
+            background: rgb(255, 255, 204);
+            border: 2px solid #000000;
+            border-radius: 5px;
+        }
+
+        .scroll_cars img {
+            border-radius: 5px;
+            width: 98px;
+            height: 78px;
+            float: left;
+            margin-right: 10px;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+
+        .scroll_cars {
+            margin: 20px auto;
+            /*width: 70%;*/
+            font-size: 140%;
+            height: 100px;
+        }
+
+        .scroll_cars p {
+            font-size: 110%;
+            margin: 5px;
+            padding-top: 15px;
+            float: left;
+            width: 12em;
+            text-align: left;
+        }
+
+        .scroll_cars a {
+            color: black;
+            margin: 5px;
+            padding-top: 15px;
+            float: left;
+        }
+
+        .list_cars_scroll {
+            border: 2px solid #000000;
+            border-radius: 5px;
+            width: 80%;
+            height: 430px;
+            margin: 5px auto;
+            overflow-y: scroll;
+        }
+
+        /*button{
+            width: 75%;
+        }*/
+    </style>
+
+</head>
+
+<body>
+    <!-- should contain an image with clickable link, some small links -->
+    <header>
+        <div id="logo" class="w3-center w3-black">
+            <img src="images/logo.png" alt="Car Network" />
+        </div>
+    </header>
+
+    <!-- will dynamically be created when link in sidebar is clicked -->
+    <h2 id="whichCars" class="w3-row w3-center">Dispaying all cars</h2>
+    <div class="w3-row w3-margin">
+        <div class="w3-col s3 w3-center w3-bar-block">
+
+            <button id="listAllButton"
+                class="w3-bar-item w3-margin w3-button w3-black w3-round-xxlarge">Show All</button>
+            
+            <button id="searchMakeButton"
+                class="w3-bar-item w3-margin w3-button w3-black w3-round-xxlarge">Filter Make</button>
+
+            <button id="searchYearButton"
+                class="w3-bar-item w3-margin w3-button w3-black w3-round-xxlarge " onlcick="showFilterYearModal()">Filter Year</button>
+
+            <button id="searchPriceButton"
+                class="w3-bar-item w3-margin w3-button w3-black w3-round-xxlarge">Filter Price</button>
+        </div>
+        <div class="w3-col s9 w3-center">
+            <div class="w3-row list_cars_scroll">
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-modal w3-margin" id="detailsModal">
+        <div class="w3-modal-content w3-animate-zoom w3-card-4">
+            <header class="w3-container w3-black ">
+                <button type="button" onclick="hideModal()" class="w3-button w3-display-topright">&times;</button>
+                <h4 class="modal-title">Details</h4>
+            </header>
+            <div class="w3-container" id="contents">
+                <div class="w3-half w3-container">
+                    <table class="w3-table">
+                        <tr>
+                            <td>Color:</td>
+                            <td><input type="text" id="color" name="color"></td>
+                        </tr>
+                        <tr>
+                            <td>Year</td>
+                            <td><input type="text" id="year" name="year" /></td>
+                        </tr>
+                        <tr>
+                            <td>Engine:</td>
+                            <td><input type="text" id="engine" name="engine" /></td>
+                        </tr>
+                        <tr>
+                            <td>Mileage:</td>
+                            <td><input type="text" id="miles" name="miles" /></td>
+                        </tr>
+                        <tr>
+                            <td>Condition:</td>
+                            <td><input type="text" id="condition" name="condition" /></td>
+                        </tr>
+                        <tr>
+                            <td>Price:</td>
+                            <td><input type="text" id="price" name="price" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="w3-half w3-container ">
+                    <img id="pic" class="w3-image" src="" />
+                </div>
+            </div>
+            <footer class=" w3-container">
+                <div class="modal-footer">
+                    <button type="button" class="w3-button w3-bar" onclick="hideModal()">Close</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modal for filter by year-->
+    <div class="w3-modal" id="filterYearModal">
+        <!-- Modal content-->
+        <div class="w3-modal-content w3-animate-zoom ">
+            <header class="w3-container w3-black ">
+                <button type="button" id="closeXyear"
+                    class="w3-button w3-display-topright">&times;</button>
+                <h4 class="modal-title">Filter By Year</h4>
+            </header>
+            <div class="modal-body" id="contents">
+                <table class="w3-table">
+                    <tr>
+                        <td>Minimum Year:</td>
+                        <td> <input type="text" id="minYear" name="searchYear"></td>
+                    </tr>
+                    <tr>
+                        <td>Maximum Year:</td>
+                        <td> <input type="text" id="maxYear" name="searchYear"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <button class="w3-button w3-bar" id="submitSearchYear">Submit</button> </td>
+                        <!-- <td> <button class="w3-button w3-bar" onclick="hideFilterYearModal()">Close</button> </td> -->
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for filter by Make-->
+    <div class="w3-modal" id="filterMakeModal">
+        <!-- Modal content-->
+        <div class="w3-modal-content w3-animate-zoom ">
+            <header class="w3-container w3-black ">
+                <button type="button"  id="closeXmake"
+                    class="w3-button w3-display-topright">&times;</button>
+                <h4 class="modal-title">Filter By Make</h4>
+            </header>
+            <div class="modal-body" id="MakeContents">
+                <table class="w3-table">
+                    <tr>
+                        <td>Enter Make:</td>
+                        <td> <input type="text" id="searchbyMake" name="searchMake"></td>
+                    </tr>
+                    <tr>
+                        <td  colspan="2"> <button class="w3-button w3-bar" id="submitSearchMake">Submit</button> </td>
+                        <!-- <td> <button class="w3-button w3-bar" onclick="hideFilterMakeModal()">Close</button> </td> -->
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for filter by Price-->
+    <div class="w3-modal" id="filterPriceModal">
+        <!-- Modal content-->
+        <div class="w3-modal-content w3-animate-zoom ">
+            <header class="w3-container w3-black ">
+                <button type="button"  id="closeXprice"
+                    class="w3-button w3-display-topright">&times;</button>
+                <h4 class="modal-title">Filter By Price</h4>
+            </header>
+            <div class="modal-body" id="PriceContents">
+                <table class="w3-table">
+                    <tr>
+                        <td>Minimum Price:</td>
+                        <td> <input type="text" id="minPrice" name="searchPrice"></td>
+                    </tr>
+                    <tr>
+                        <td>Maximum Price:</td>
+                        <td> <input type="text" id="maxPrice" name="searchPrice"></td>
+                    </tr>
+                    <tr>
+                        <td  colspan="2"> <button class="w3-button w3-bar" id="submitSearchPrice">Submit</button> </td>
+                        <!-- <td> <button class="w3-button w3-bar" onclick="hideFilterPriceModal()">Close</button> </td> -->
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <h1 class="w3-black w3-center w3-margin">CarNetworks  - Quality cars at great prices</h1>
+    </footer>
+
+</body>
+
+</html>
